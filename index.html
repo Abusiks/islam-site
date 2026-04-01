@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Ислам Махачев | Двойной чемпион UFC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Splash screen */
+        .splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1.2s ease, visibility 1.2s ease;
+            opacity: 1;
+            visibility: visible;
+        }
+        .splash.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .splash-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.6) blur(2px);
+        }
+        .splash-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            animation: fadeInUp 1.5s ease-out;
+        }
+        .splash-content h1 {
+            font-size: 5rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #d4af37, #ffd966, #fff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-transform: uppercase;
+        }
+        .splash-content p {
+            font-size: 1.2rem;
+            color: #d4af37;
+            margin-top: 1rem;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10,10,10,0.98);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(212,175,55,0.3);
+            z-index: 1000;
+            padding: 14px 0;
+            transform: translateY(-100%);
+            transition: transform 0.5s ease;
+        }
+        nav.visible {
+            transform: translateY(0);
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #d4af37, #ffd966);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .logo i {
+            color: #d4af37;
+            margin-right: 6px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: #a0a0a0;
+            text-decoration: none;
+            padding: 8px 20px;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 40px;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #d4af37;
+            background: rgba(212,175,55,0.1);
+        }
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 20px;
+            right: 20px;
+            height: 2px;
+            background: #d4af37;
+            border-radius: 2px;
+        }
+
+        /* Main content */
+        main {
+            flex: 1;
+            padding-top: 80px;
+        }
+        .page {
+            display: none;
+            padding: 20px 32px 60px;
+            animation: fade 0.4s ease;
+        }
+        .page.active {
+            display: block;
+        }
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .page-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #d4af37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 16px;
+        }
+        .page-header p {
+            color: #888;
+        }
+        .page-header::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: #d4af37;
+            margin: 20px auto 0;
+        }
+
+        /* Cards */
+        .grid-2, .grid-3, .grid-4 {
+            display: grid;
+            gap: 32px;
+        }
+        .grid-2 { grid-template-columns: repeat(2,1fr); }
+        .grid-3 { grid-template-columns: repeat(3,1fr); }
+        .grid-4 { grid-template-columns: repeat(4,1fr); }
+
+        .card {
+            background: #111;
+            border: 1px solid #222;
+            padding: 32px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212,175,55,0.1), transparent);
+            transition: left 0.5s;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: #d4af37;
+            box-shadow: 0 12px 32px rgba(212,175,55,0.2);
+        }
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #222;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .info-label {
+            color: #d4af37;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .wiki-link {
+            color: #d4af37;
+            text-decoration: none;
+        }
+        .wiki-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Stats */
+        .stat-card {
+            background: #111;
+            border: 1px solid #222;
+            padding: 32px 24px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .stat-card:hover {
+            border-color: #d4af37;
+            transform: translateY(-5px);
+        }
+        .stat-number {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #d4af37;
+        }
+        .streak-counter {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 2px solid #d4af37;
+            padding: 32px;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .streak-number {
+            font-size: 4rem;
+            font-weight: 800;
+            color: #d4af37;
+        }
+
+        /* Table */
+        .table-wrapper {
+            overflow-x: auto;
+            background: #111;
+            border: 1px solid #222;
+        }
+        .fight-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .fight-table th, .fight-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid #222;
+        }
+        .fight-table th {
+            color: #d4af37;
+            background: #0a0a0a;
+        }
+        .result-win {
+            color: #2ecc71;
+            font-weight: 700;
+        }
+        .result-loss {
+            color: #e74c3c;
+            font-weight: 700;
+        }
+
+        /* Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 20px;
+        }
+        .gallery-item {
+            background: #111;
+            border: 1px solid #222;
+            aspect-ratio: 4/3;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .gallery-item:hover {
+            border-color: #d4af37;
+            transform: translateY(-5px);
+        }
+        .gallery-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2a, #0f0f1a);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            gap: 12px;
+            text-align: center;
+            padding: 20px;
+        }
+        .gallery-placeholder i {
+            font-size: 2rem;
+            color: #d4af37;
+            opacity: 0.5;
+        }
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.05);
+        }
+
+        /* Social */
+        .social-grid {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+        .social-card {
+            background: #111;
+            border: 1px solid #222;
+            padding: 20px 32px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s;
+        }
+        .social-card:hover {
+            border-color: #d4af37;
+            transform: translateY(-5px);
+        }
+        .social-card i {
+            font-size: 1.8rem;
+            color: #d4af37;
+        }
+
+        /* Quotes */
+        .quote-card {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border-left: 4px solid #d4af37;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .quote-text {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        .quote-author {
+            color: #d4af37;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        /* Journey */
+        .journey-map {
+            padding-left: 40px;
+            position: relative;
+        }
+        .journey-item {
+            position: relative;
+            padding-bottom: 40px;
+            border-left: 2px solid #d4af37;
+            padding-left: 30px;
+            margin-left: 20px;
+            transition: all 0.3s;
+        }
+        .journey-item:hover {
+            transform: translateX(8px);
+        }
+        .journey-item:last-child {
+            border-left: none;
+            padding-bottom: 0;
+        }
+        .journey-year {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #d4af37;
+            margin-bottom: 8px;
+        }
+        .journey-content {
+            background: #0a0a0a;
+            padding: 16px;
+            border: 1px solid #333;
+        }
+        .journey-icon {
+            position: absolute;
+            left: -45px;
+            top: 0;
+            width: 32px;
+            height: 32px;
+            background: #d4af37;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+        }
+
+        /* Footer */
+        footer {
+            background: #0a0a0a;
+            border-top: 1px solid #222;
+            text-align: center;
+            padding: 40px 32px;
+            margin-top: 60px;
+            color: #666;
+        }
+        .creator {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #111;
+            padding: 10px 28px;
+            border: 1px solid #222;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s;
+        }
+        .creator:hover {
+            border-color: #d4af37;
+            transform: translateY(-2px);
+        }
+        .creator i {
+            color: #d4af37;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4, .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .splash-content h1 {
+                font-size: 2.5rem;
+            }
+            .nav-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="splash" id="splash">
+    <img class="splash-bg" src="https://i.dailymail.co.uk/1s/2025/11/16/06/103918313-0-image-a-10_1763273247120.jpg" alt="Islam Makhachev">
+    <div class="splash-content">
+        <h1>Islam Makhachev</h1>
+        <p>Double Champion • #1 P4P</p>
+    </div>
+</div>
+
+<nav id="navbar">
+    <div class="nav-container">
+        <div class="logo"><i class="fas fa-crown"></i> ИСЛАМ МАХАЧЕВ</div>
+        <div class="nav-links">
+            <a href="#" data-page="bio" class="active"><i class="fas fa-user"></i> Биография</a>
+            <a href="#" data-page="stats"><i class="fas fa-chart-line"></i> Статистика</a>
+            <a href="#" data-page="fights"><i class="fas fa-fist-raised"></i> Бои</a>
+            <a href="#" data-page="facts"><i class="fas fa-lightbulb"></i> Факты</a>
+        </div>
+    </div>
+</nav>
+
+<main>
+    <!-- БИОГРАФИЯ -->
+    <div id="bio" class="page active">
+        <div class="container">
+            <div class="page-header">
+                <h1><i class="fas fa-scroll"></i> Биография</h1>
+                <p>Путь от горного Дагестана до вершины UFC</p>
+            </div>
+            <div class="grid-2">
+                <div class="card">
+                    <h2 style="color:#d4af37; margin-bottom:20px;"><i class="fas fa-id-card"></i> Основная информация</h2>
+                    <div class="info-row"><span class="info-label"><i class="fas fa-user"></i> Полное имя</span><span><a href="https://ru.wikipedia.org/wiki/Махачев,_Ислам_Рамазанович" target="_blank" class="wiki-link">Ислам Рамазанович Махачев</a></span></div>
+                    <div class="info-row"><span class="info-label"><i class="fas fa-flag"></i> Национальность</span><span>Лакец</span></div>
+                    <div class="info-row"><span class="info-label"><i class="fas fa-calendar-alt"></i> Дата рождения</span><span>27 октября 1991 (34 года)</span></div>
+                    <div class="info-row"><span class="info-label"><i class="fas fa-map-marker-alt"></i> Место рождения</span><span>с. Бурши, Лакский район, Дагестан</span></div>
+                    <div class="info-row"><span class="info-label"><i class="fas fa-ruler"></i> Рост</span><span>178 см</span></div>
+                    <div class="info-row"><span class="info-label"><i class="fas fa-weight-hanging"></i> Вес</span><span>70 кг / 77 кг</span></div>
+                    <div class="info-row"><span class="info-label"><i class="fas fa-users"></i> Команда</span><span>AKA, Eagles MMA</span></div>
+                    <div class="info-row"><span class="info-label"><i class="fas fa-chalkboard-user"></i> Тренеры</span><span>Хабиб Нурмагомедов, Хавьер Мендес</span></div>
+                </div>
+                <div class="card">
+                    <h2 style="color:#d4af37; margin-bottom:20px;"><i class="fas fa-road"></i> Ранние годы</h2>
+                    <p><i class="fas fa-mountain"></i> Ислам Махачев родился в отдалённом горном селе Бурши Лакского района Дагестана. По национальности — лакец. Село расположено на высоте 1500 метров, дорога туда — узкий серпантин вдоль реки. В детстве начал с тхэквондо, затем переключился на вольную борьбу.</p>
+                    <p style="margin-top:12px;"><i class="fas fa-handshake"></i> В 12 лет попал в школу Абдулманапа Нурмагомедова. Тренер сразу разглядел в юном Исламе огромный потенциал, отмечая его природную силу, гибкость и чувство дистанции. Абдулманап часто говорил: «Этот парень станет чемпионом». С тех пор Ислам тренируется вместе с Хабибом, став для него не просто спарринг-партнёром, но и младшим братом.</p>
+                </div>
+            </div>
+            <div class="card">
+                <h2 style="color:#d4af37; margin-bottom:20px;"><i class="fas fa-medal"></i> Карьера в UFC</h2>
+                <p><i class="fas fa-calendar-alt"></i> <strong>Дебют и первое поражение (2015):</strong> Дебютировал в UFC 23 мая 2015 года, победив Лео Кунца удушением сзади. В следующем бою на UFC 192 потерпел единственное поражение в карьере — нокаутом от Адриано Мартинса. Это поражение стало переломным моментом. Ислам позже признавался: «Я понял, что надо работать в два раза больше. Это поражение сделало меня сильнее».</p>
+                <p style="margin-top:12px;"><i class="fas fa-chart-line"></i> <strong>Великая победная серия (2016-2022):</strong> После паузы Ислам вернулся и начал историческую победную серию. Он последовательно побеждал Криса Уэйда, Ника Ленца, Глейсона Тибау, Кайана Джонсона, Армана Царукяна, Дави Рамоса, Дрю Добера, Тиаго Мойзеса и Дэна Хукера. Каждый бой демонстрировал его эволюцию: от борца-доминатора до универсального бойца с мощной ударной техникой.</p>
+                <p style="margin-top:12px;"><i class="fas fa-trophy"></i> <strong>Завоевание титула (2022):</strong> 22 октября 2022 года на UFC 280 встретился с Чарльзом Оливейрой за вакантный титул чемпиона в легком весе. Махачев доминировал с первых секунд и во втором раунде задушил Оливейру ручным треугольником, став новым чемпионом.</p>
+                <p style="margin-top:12px;"><i class="fas fa-shield-alt"></i> <strong>Эпоха доминирования (2023-2025):</strong> Дважды победил Александра Волкановски (сначала решением, затем нокаутом в первом раунде), задушил Дастина Порье в пятом раунде на UFC 302, победил Ренато Мойкано. В ноябре 2025 года поднялся в полусредний вес и стал двойным чемпионом, победив Джека Делла Маддалену.</p>
+                <p style="margin-top:12px;"><i class="fas fa-star"></i> <strong>Наследие:</strong> Ислам Махачев — один из величайших легковесов в истории ММА. Его рекорд 18 побед подряд в UFC лёгком весе, двойное чемпионство и статус #1 P4P ставят его в один ряд с легендами спорта.</p>
+            </div>
+            <div class="card">
+                <h2 style="color:#d4af37; margin-bottom:20px;"><i class="fas fa-images"></i> Фотогалерея</h2>
+                <div class="gallery-grid" id="bioGallery"></div>
+                <p style="margin-top: 16px; color: #888; font-size: 0.8rem; text-align: center;"><i class="fas fa-info-circle"></i> Чтобы добавить фото, замените содержимое каждого слота на <code>&lt;img src="ваша_ссылка" class="gallery-img"&gt;</code> в коде</p>
+            </div>
+            <div class="card">
+                <h2 style="color:#d4af37; margin-bottom:20px;"><i class="fas fa-award"></i> Достижения</h2>
+                <div class="grid-3">
+                    <div><i class="fas fa-trophy"></i> Двойной чемпион UFC</div>
+                    <div><i class="fas fa-chart-line"></i> 18 побед подряд в UFC (рекорд дивизиона)</div>
+                    <div><i class="fas fa-medal"></i> Чемпион мира по боевому самбо (2016)</div>
+                    <div><i class="fas fa-star"></i> #1 P4P (2023-2025) — 602 дня</div>
+                    <div><i class="fas fa-history"></i> 5 защит титула в лёгком весе</div>
+                    <div><i class="fas fa-crown"></i> Один из 11 двойных чемпионов в истории UFC</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- СТАТИСТИКА -->
+    <div id="stats" class="page">
+        <div class="container">
+            <div class="page-header">
+                <h1><i class="fas fa-chart-simple"></i> Статистика</h1>
+                <p>Полные цифры профессиональной карьеры</p>
+            </div>
+            <div class="streak-counter">
+                <i class="fas fa-fire" style="color:#d4af37; font-size:2rem;"></i>
+                <h3>ТЕКУЩАЯ ПОБЕДНАЯ СЕРИЯ</h3>
+                <div class="streak-number" id="streakCounter">0</div>
+                <p>27 побед подряд в ММА • 18 побед подряд в UFC</p>
+            </div>
+            <div class="grid-4" id="statsContainer"></div>
+        </div>
+    </div>
+
+    <!-- БОИ -->
+    <div id="fights" class="page">
+        <div class="container">
+            <div class="page-header">
+                <h1><i class="fas fa-history"></i> История боёв</h1>
+                <p>Все профессиональные поединки (2010-2026) — от последнего к первому</p>
+            </div>
+            <div class="table-wrapper">
+                <table class="fight-table">
+                    <thead>
+                        <tr><th>Дата</th><th>Организация</th><th>Соперник</th><th>Результат</th><th>Способ</th><th>Раунд</th> </tr
+                    </thead>
+                    <tbody id="fightsTable"></tbody>
+                寸
+            </div>
+        </div>
+    </div>
+
+    <!-- ФАКТЫ (СТАТИЧЕСКИЕ) -->
+    <div id="facts" class="page">
+        <div class="container">
+            <div class="page-header">
+                <h1><i class="fas fa-lightbulb"></i> Интересные факты</h1>
+                <p>Достоверные факты из жизни и карьеры чемпиона</p>
+            </div>
+            <div class="grid-3">
+                <div class="card"><i class="fas fa-flag" style="font-size:2rem; color:#d4af37; margin-bottom:16px; display:inline-block;"></i><h3 style="margin-bottom:12px;">Лакец по национальности</h3><p style="color:#aaa;">Ислам Махачев — представитель лакского народа. Родился в селе Бурши, Лакский район.</p></div>
+                <div class="card"><i class="fas fa-heartbeat" style="font-size:2rem; color:#d4af37; margin-bottom:16px; display:inline-block;"></i><h3 style="margin-bottom:12px;">Операция на сердце</h3><p style="color:#aaa;">В 2014 году перенёс операцию на сердце. Врачи сомневались, но в 2016-м он выиграл чемпионат мира по самбо.</p></div>
+                <div class="card"><i class="fas fa-chalkboard-user" style="font-size:2rem; color:#d4af37; margin-bottom:16px; display:inline-block;"></i><h3 style="margin-bottom:12px;">Ученик Абдулманапа</h3><p style="color:#aaa;">Абдулманап Нурмагомедов называл Ислама «самым талантливым учеником» и предсказывал ему чемпионство.</p></div>
+                <div class="card"><i class="fas fa-language" style="font-size:2rem; color:#d4af37; margin-bottom:16px; display:inline-block;"></i><h3 style="margin-bottom:12px;">Полиглот</h3><p style="color:#aaa;">Свободно владеет лакским, русским, английским и арабским языками.</p></div>
+                <div class="card"><i class="fas fa-chart-line" style="font-size:2rem; color:#d4af37; margin-bottom:16px; display:inline-block;"></i><h3 style="margin-bottom:12px;">Рекордсмен UFC</h3><p style="color:#aaa;">18 побед подряд в UFC — самый длинный винстрик в истории лёгкого веса.</p></div>
+                <div class="card"><i class="fas fa-mosque" style="font-size:2rem; color:#d4af37; margin-bottom:16px; display:inline-block;"></i><h3 style="margin-bottom:12px;">Вера</h3><p style="color:#aaa;">Практикующий мусульманин. Перед боем совершает намаз и читает дуа.</p></div>
+                <div class="card"><i class="fas fa-motorcycle" style="font-size:2rem; color:#d4af37; margin-bottom:16px; display:inline-block;"></i><h3 style="margin-bottom:12px;">Увлечения</h3><p style="color:#aaa;">Любит мотокросс и конные прогулки. В свободное время предпочитает проводить время с семьёй.</p></div>
+                <div class="card"><i class="fas fa-hands-helping" style="font-size:2rem; color:#d4af37; margin-bottom:16px; display:inline-block;"></i><h3 style="margin-bottom:12px;">Благотворительность</h3><p style="color:#aaa;">Помогает родному селу Бурши: построил дорогу, провёл газ, поддерживает мечеть и школу.</p></div>
+                <div class="card"><i class="fas fa-film" style="font-size:2rem; color:#d4af37; margin-bottom:16px; display:inline-block;"></i><h3 style="margin-bottom:12px;">Любимые фильмы</h3><p style="color:#aaa;">Любит исторические драмы. Любимый фильм — «Легенда №17».</p></div>
+                <div class="card"><i class="fas fa-dumbbell" style="font-size:2rem; color:#d4af37; margin-bottom:16px; display:inline-block;"></i><h3 style="margin-bottom:12px;">Спаринг с Хабибом</h3><p style="color:#aaa;">Тысячи часов спаррингов с Хабибом Нурмагомедовым отточили его мастерство до совершенства.</p></div>
+                <div class="card"><i class="fas fa-city" style="font-size:2rem; color:#d4af37; margin-bottom:16px; display:inline-block;"></i><h3 style="margin-bottom:12px;">Переезд в США</h3><p style="color:#aaa;">В 2013 году переехал в Сан-Хосе для тренировок в American Kickboxing Academy.</p></div>
+                <div class="card"><i class="fas fa-crown" style="font-size:2rem; color:#d4af37; margin-bottom:16px; display:inline-block;"></i><h3 style="margin-bottom:12px;">Двойной чемпион</h3><p style="color:#aaa;">Один из 11 бойцов в истории UFC, владевших поясами в двух весовых категориях одновременно.</p></div>
+            </div>
+
+            <div class="card">
+                <h2 style="color:#d4af37; margin-bottom:20px; text-align:center;"><i class="fas fa-quote-right"></i> Цитаты великих об Исламе</h2>
+                <div class="quote-card"><div class="quote-text">«Ислам — самый полный боец в дивизионе. Он может всё: борьба, ударка, джиу-джитсу. Он будет доминировать ещё долгие годы».</div><div class="quote-author">— Хабиб Нурмагомедов</div></div>
+                <div class="quote-card"><div class="quote-text">«Махачев — это следующий уровень. Он разобрал меня по частям. Я никогда не встречал такого давления в октагоне».</div><div class="quote-author">— Дастин Порье</div></div>
+                <div class="quote-card"><div class="quote-text">«Ислам — лучший легковес всех времен. Его победная серия и доминирование не имеют аналогов в истории дивизиона».</div><div class="quote-author">— Дана Уайт, президент UFC</div></div>
+            </div>
+
+            <div class="card">
+                <h2 style="color:#d4af37; margin-bottom:20px; text-align:center;"><i class="fas fa-map-marked-alt"></i> Путь чемпиона</h2>
+                <div class="journey-map">
+                    <div class="journey-item"><div class="journey-icon"><i class="fas fa-child"></i></div><div class="journey-year">1991</div><div class="journey-content">Рождение в селе Бурши, Лакский район Дагестана</div></div>
+                    <div class="journey-item"><div class="journey-icon"><i class="fas fa-fist-raised"></i></div><div class="journey-year">2003</div><div class="journey-content">Начало тренировок под руководством Абдулманапа Нурмагомедова</div></div>
+                    <div class="journey-item"><div class="journey-icon"><i class="fas fa-trophy"></i></div><div class="journey-year">2016</div><div class="journey-content">Чемпион мира по боевому самбо (София, Болгария)</div></div>
+                    <div class="journey-item"><div class="journey-icon"><i class="fas fa-crown"></i></div><div class="journey-year">2022</div><div class="journey-content">Завоевание титула чемпиона UFC в легком весе (UFC 280)</div></div>
+                    <div class="journey-item"><div class="journey-icon"><i class="fas fa-star"></i></div><div class="journey-year">2023</div><div class="journey-content">Признан лучшим бойцом P4P, две победы над Волкановски</div></div>
+                    <div class="journey-item"><div class="journey-icon"><i class="fas fa-double"></i></div><div class="journey-year">2025</div><div class="journey-content">Стал двойным чемпионом UFC, победив Джека Делла Маддалену</div></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 style="color:#d4af37; margin-bottom:24px; text-align:center;"><i class="fas fa-share-alt"></i> Социальные сети Ислама</h2>
+                <div class="social-grid">
+                    <a href="https://www.instagram.com/islam_makhachev" target="_blank" class="social-card"><i class="fab fa-instagram"></i><span>Instagram</span></a>
+                    <a href="https://twitter.com/MAKHACHEVMMA" target="_blank" class="social-card"><i class="fab fa-twitter"></i><span>Twitter (X)</span></a>
+                    <a href="https://t.me/islam_makhachev_official" target="_blank" class="social-card"><i class="fab fa-telegram"></i><span>Telegram-канал</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <a href="https://t.me/abdltp05" target="_blank" class="creator">
+            <i class="fas fa-code"></i>
+            <span>Создатель: Abus</span>
+            <i class="fab fa-telegram"></i>
+            <span>@abdltp05</span>
+        </a>
+        <p style="margin-top:24px;">© 2026 Ислам Махачев | Данные: UFC.com, Sherdog, Wikipedia</p>
+    </div>
+</footer>
+
+<script>
+    // Данные боёв
+    const fightsData = [
+        { date: "15.11.2025", org: "UFC 322", opponent: "Джек Делла Маддалена", result: "win", method: "Единогласное решение", round: "5" },
+        { date: "18.01.2025", org: "UFC 311", opponent: "Ренато Мойкано", result: "win", method: "Удушение Д'Арс", round: "1" },
+        { date: "01.06.2024", org: "UFC 302", opponent: "Дастин Порье", result: "win", method: "Удушение Д'Арс", round: "5" },
+        { date: "21.10.2023", org: "UFC 294", opponent: "Алекс Волкановски", result: "win", method: "Нокаут (удар ногой)", round: "1" },
+        { date: "12.02.2023", org: "UFC 284", opponent: "Алекс Волкановски", result: "win", method: "Единогласное решение", round: "5" },
+        { date: "22.10.2022", org: "UFC 280", opponent: "Чарльз Оливейра", result: "win", method: "Ручной треугольник", round: "2" },
+        { date: "26.02.2022", org: "UFC Fight Night", opponent: "Бобби Грин", result: "win", method: "ТКО", round: "1" },
+        { date: "30.10.2021", org: "UFC 267", opponent: "Дэн Хукер", result: "win", method: "Кимура", round: "1" },
+        { date: "17.07.2021", org: "UFC on ESPN", opponent: "Тиаго Мойзес", result: "win", method: "Удушение сзади", round: "4" },
+        { date: "06.03.2021", org: "UFC 259", opponent: "Дрю Добер", result: "win", method: "Ручной треугольник", round: "3" },
+        { date: "07.09.2019", org: "UFC 242", opponent: "Дави Рамос", result: "win", method: "Единогласное решение", round: "3" },
+        { date: "20.04.2019", org: "UFC Fight Night", opponent: "Арман Царукян", result: "win", method: "Единогласное решение", round: "3" },
+        { date: "28.07.2018", org: "UFC on Fox", opponent: "Кайан Джонсон", result: "win", method: "Рычаг локтя", round: "1" },
+        { date: "20.01.2018", org: "UFC 220", opponent: "Глейсон Тибау", result: "win", method: "Нокаут", round: "1" },
+        { date: "11.02.2017", org: "UFC 208", opponent: "Ник Ленц", result: "win", method: "Единогласное решение", round: "3" },
+        { date: "17.09.2016", org: "UFC Fight Night", opponent: "Крис Уэйд", result: "win", method: "Единогласное решение", round: "3" },
+        { date: "03.10.2015", org: "UFC 192", opponent: "Адриано Мартинс", result: "loss", method: "Нокаут", round: "1" },
+        { date: "23.05.2015", org: "UFC 187", opponent: "Лео Кунц", result: "win", method: "Удушение сзади", round: "2" }
+    ];
+
+    // Статистика
+    const totalWins = fightsData.filter(f => f.result === 'win').length;
+    const totalLosses = fightsData.filter(f => f.result === 'loss').length;
+    const ufcWins = fightsData.filter(f => f.result === 'win' && f.org.includes('UFC')).length;
+    const subWins = fightsData.filter(f => f.result === 'win' && (f.method.includes('Удушение') || f.method.includes('Кимура') || f.method.includes('Треугольник') || f.method.includes('Рычаг'))).length;
+    const koWins = fightsData.filter(f => f.result === 'win' && (f.method.includes('Нокаут') || f.method.includes('ТКО'))).length;
+    const decWins = fightsData.filter(f => f.result === 'win' && f.method.includes('Решение')).length;
+    let streak = 0;
+    for (let i = 0; i < fightsData.length; i++) {
+        if (fightsData[i].result === 'loss') break;
+        if (fightsData[i].result === 'win') streak++;
+    }
+
+    document.getElementById('streakCounter').innerText = streak;
+    document.getElementById('statsContainer').innerHTML = `
+        <div class="stat-card"><div class="stat-number">${totalWins}-${totalLosses}</div><div>Общий рекорд MMA</div></div>
+        <div class="stat-card"><div class="stat-number">${ufcWins}-1</div><div>Рекорд UFC</div></div>
+        <div class="stat-card"><div class="stat-number">${subWins}</div><div>Сабмишены</div></div>
+        <div class="stat-card"><div class="stat-number">${koWins}</div><div>Нокауты</div></div>
+        <div class="stat-card"><div class="stat-number">${decWins}</div><div>Решения</div></div>
+        <div class="stat-card"><div class="stat-number">4</div><div>Защиты титула (LW)</div></div>
+        <div class="stat-card"><div class="stat-number">1</div><div>Защита титула (WW)</div></div>
+        <div class="stat-card"><div class="stat-number">27</div><div>Победная серия в ММА</div></div>
+    `;
+
+    // Таблица боёв
+    const tbody = document.getElementById('fightsTable');
+    fightsData.forEach(fight => {
+        const row = tbody.insertRow();
+        row.insertCell(0).innerHTML = fight.date;
+        row.insertCell(1).innerHTML = fight.org;
+        row.insertCell(2).innerHTML = fight.opponent;
+        row.insertCell(3).innerHTML = `<span class="${fight.result === 'win' ? 'result-win' : 'result-loss'}">${fight.result === 'win' ? 'ПОБЕДА' : 'ПОРАЖЕНИЕ'}</span>`;
+        row.insertCell(4).innerHTML = fight.method;
+        row.insertCell(5).innerHTML = fight.round;
+    });
+
+    // Галерея (6 слотов)
+    const galleryDiv = document.getElementById('bioGallery');
+    for (let i = 1; i <= 6; i++) {
+        const item = document.createElement('div');
+        item.className = 'gallery-item';
+        item.innerHTML = `
+            <div class="gallery-placeholder">
+                <i class="fas fa-image"></i>
+                <p>Слот ${i}</p>
+                <p style="font-size:0.7rem;">замените на <code>&lt;img src="..." class="gallery-img"&gt;</code></p>
+            </div>
+        `;
+        galleryDiv.appendChild(item);
+    }
+
+    // Навигация
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('data-page') === pageId) link.classList.add('active');
+        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage(link.getAttribute('data-page'));
+        });
+    });
+
+    // Splash
+    setTimeout(() => {
+        const splash = document.getElementById('splash');
+        splash.classList.add('hidden');
+        setTimeout(() => {
+            document.getElementById('navbar').classList.add('visible');
+        }, 200);
+    }, 2800);
+</script>
+</body>
+</html>
